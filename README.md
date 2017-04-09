@@ -1,10 +1,9 @@
 # go-gently
 
-[**The Poem**](https://www.poets.org/poetsorg/poem/do-not-go-gentle-good-night)
+The Go-Gently service is a Go language package to enable other Go services to gently shutdown when they receive a `SIGTERM`, `SIGINT` or `SIGQUIT` signal.
+
 > "Do not go gentle into that good night"
 > -- Dylan Thomas, 1914 - 1953
-
-The Go-Gently service is a Go language package to enable other Go services to gently shutdown when they receive a `SIGTERM`, `SIGINT` or `SIGQUIT` signal.
 
 While **Dylan Thomas** urges us _not_ to go gentle into that good night in his famous poem, we _do_ want our services to do just that. This library makes that possible.
 
