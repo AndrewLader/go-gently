@@ -1,5 +1,10 @@
 # go-gently
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/andrewlader/go-gently)](https://goreportcard.com/report/github.com/andrewlader/go-gently)
+[![Build Status](https://travis-ci.org/AndrewLader/ggo-gently.svg?branch=master)](https://travis-ci.org/AndrewLader/go-gently)
+[![Coverage Status](https://coveralls.io/repos/github/AndrewLader/go-gently/badge.svg?branch=master)](https://coveralls.io/github/AndrewLader/go-gently?branch=master)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/AndrewLader/go-gently/blob/master/LICENSE)
+
 The Go-Gently service is a Go language package to enable other Go services to gently shutdown when they receive a `SIGTERM`, `SIGINT` or `SIGQUIT` signal.
 
 > "Do not go gentle into that good night"
