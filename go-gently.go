@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
 )
 
@@ -19,6 +20,7 @@ type Gently interface {
 type GoodNight struct {
 	signalListener chan os.Signal
 	toBeNotified   []Gently
+	waiter         sync.WaitGroup
 }
 
 // New initializes a new instance of the GoodNight struct
@@ -34,6 +36,9 @@ func New() *GoodNight {
 	// the signalListener channel
 	signal.Notify(goodNight.signalListener, signalsToListenOn...)
 
+	// add 1 to the WaitGroup
+	goodNight.waiter.Add(1)
+
 	go waitForSignal(goodNight)
 
 	return goodNight
@@ -45,6 +50,11 @@ func (goodNight *GoodNight) Register(toBeRegistered Gently) {
 	goodNight.toBeNotified = append(goodNight.toBeNotified, toBeRegistered)
 }
 
+// Wait will wait for the GoodNight instance to signal all of its registered users
+func (goodNight *GoodNight) Wait() {
+	goodNight.waiter.Wait()
+}
+
 func waitForSignal(goodNight *GoodNight) {
 	signalRecevied := <-goodNight.signalListener
 
@@ -54,4 +64,6 @@ func waitForSignal(goodNight *GoodNight) {
 	}
 
 	signal.Stop(goodNight.signalListener)
+
+	goodNight.waiter.Done()
 }
