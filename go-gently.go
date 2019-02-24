@@ -1,6 +1,7 @@
 package gently
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -57,6 +58,8 @@ func (goodNight *GoodNight) Wait() {
 
 func waitForSignal(goodNight *GoodNight) {
 	signalRecevied := <-goodNight.signalListener
+
+	fmt.Printf("\n")
 
 	for _, itemToBeNotified := range goodNight.toBeNotified {
 		log.Printf("Notifying { %s } to stop gently...", itemToBeNotified.GetName())
