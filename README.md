@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/andrewlader/go-gently)](https://goreportcard.com/report/github.com/andrewlader/go-gently)
 [![Build Status](https://travis-ci.org/AndrewLader/go-gently.svg?branch=master)](https://travis-ci.org/AndrewLader/go-gently)
+[![Coverage Status](https://codecov.io/gh/AndrewLader/go-gently/branch/master/graph/badge.svg)](https://codecov.io/gh/AndrewLader/go-gently)
 [![Coverage Status](https://coveralls.io/repos/github/AndrewLader/go-gently/badge.svg?branch=master)](https://coveralls.io/github/AndrewLader/go-gently?branch=master)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/AndrewLader/go-gently/blob/master/LICENSE)
 
