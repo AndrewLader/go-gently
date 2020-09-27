@@ -59,6 +59,8 @@ func (goodNight *GoodNight) Wait() {
 func waitForSignal(goodNight *GoodNight) {
 	signalReceived := <-goodNight.signalListener
 
+	log.Print("\n")
+	log.Print("SIGNAL RECEIVED!")
 	log.Printf("go-gently received OS signal '%s', will begin notifying registered structs", signalReceived)
 
 	for _, itemToBeNotified := range goodNight.toBeNotified {
