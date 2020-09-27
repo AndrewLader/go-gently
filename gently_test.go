@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 )
 
 type testStruct struct {
@@ -12,20 +13,25 @@ type testStruct struct {
 }
 
 func (ts *testStruct) GetName() string {
-	return fmt.Sprintf("testStruct %s", ts.name)
+	return fmt.Sprintf("testStruct '%s'", ts.name)
 }
 
 func (ts *testStruct) StopGently(signal os.Signal) {
-	log.Printf("stopping test struct %s gently...", ts.name)
+	log.Printf("gently stopping test struct '%s'...", ts.name)
 }
 
-func TestRegisterSuccess(t *testing.T) {
+func TestInterruptSuccess(t *testing.T) {
 	defer handleTestPanics(t)
 
-	theTestStruct := createTestStruct()
+	queueUpArtificialSignalAfterDelay(os.Interrupt, 500)
+	t.Log("tested artificial interrupt signal")
+}
 
-	goodnight := New()
-	goodnight.Register(theTestStruct)
+func TestKillSuccess(t *testing.T) {
+	defer handleTestPanics(t)
+
+	queueUpArtificialSignalAfterDelay(os.Kill, 500)
+	t.Log("tested artificial kill signal")
 }
 
 func createTestStruct() *testStruct {
@@ -42,4 +48,22 @@ func handleTestPanics(t *testing.T) {
 	} else {
 		t.Log("No panics, all good...")
 	}
+}
+
+func queueUpArtificialSignalAfterDelay(signal os.Signal, delay int) {
+	theTestStruct := createTestStruct()
+
+	goodnight := New()
+	goodnight.Register(theTestStruct)
+
+	go sendSignalAfterDelay(goodnight, signal, delay)
+
+	// wait for all of the registered structs to be notified
+	goodnight.Wait()
+}
+
+func sendSignalAfterDelay(goodnight *GoodNight, signal os.Signal, delay int) {
+	// send specified signal after specified delay
+	time.Sleep(time.Duration(delay) * time.Millisecond)
+	goodnight.signalListener <- signal
 }

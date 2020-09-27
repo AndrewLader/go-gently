@@ -1,7 +1,6 @@
 package gently
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -49,6 +48,7 @@ func New() *GoodNight {
 // with the GoodNight struct so it can be notified when to stop gently
 func (goodNight *GoodNight) Register(toBeRegistered Gently) {
 	goodNight.toBeNotified = append(goodNight.toBeNotified, toBeRegistered)
+	log.Printf("go-gently registered { %s } to be stopped gently...", toBeRegistered.GetName())
 }
 
 // Wait will wait for the GoodNight instance to signal all of its registered users
@@ -57,16 +57,17 @@ func (goodNight *GoodNight) Wait() {
 }
 
 func waitForSignal(goodNight *GoodNight) {
-	signalRecevied := <-goodNight.signalListener
+	signalReceived := <-goodNight.signalListener
 
-	fmt.Printf("\n")
+	log.Printf("go-gently received OS signal '%s', will begin notifying registered structs", signalReceived)
 
 	for _, itemToBeNotified := range goodNight.toBeNotified {
-		log.Printf("Notifying { %s } to stop gently...", itemToBeNotified.GetName())
-		itemToBeNotified.StopGently(signalRecevied)
+		log.Printf("go-gently notifying { %s } to stop gently...", itemToBeNotified.GetName())
+		itemToBeNotified.StopGently(signalReceived)
 	}
 
 	signal.Stop(goodNight.signalListener)
 
+	log.Printf("go-gently notified all registered structs for OS signal '%s'", signalReceived)
 	goodNight.waiter.Done()
 }
